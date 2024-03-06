@@ -1,45 +1,45 @@
-# Developer Guides
+#開發人南。。
 
-## BusyBox
+##。。。 箱。。。
 
-Magisk ships with a feature complete BusyBox binary (including full SELinux support). The executable is located at `/data/adb/magisk/busybox`. Magisk's BusyBox supports runtime toggle-able "ASH Standalone Shell Mode". What this standalone mode means is that when running in the `ash` shell of BusyBox, every single command will directly use the applet within BusyBox, regardless of what is set as `PATH`. For example, commands like `ls`, `rm`, `chmod` will **NOT** use what is in `PATH` (in the case of Android by default it will be `/system/bin/ls`, `/system/bin/rm`, and `/system/bin/chmod` respectively), but will instead directly call internal BusyBox applets. This makes sure that scripts always run in a predictable environment and always have the full suite of commands no matter which Android version it is running on. To force a command _not_ to use BusyBox, you have to call the executable with full paths.
+Magisk附帶功能完整的BusyBox二進製文件(包括完整的SELinux支持)。. 可執行文件位於。 `/數據/ adb / magisk /忙箱。。`.  Magisk的BusyBox運載時換成全切變的“ ASH佐外變模”。. wa種與合意的意向行。。. `‐。。` 商業票據外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外,外。 `路。`.  例,令喜。. `ls。。`, `rm。。`, `chmod。。` 王。 **。。不是。。。**。。.  利用面朝的東西。。。 `路。` ( 【Android b。。y默認會是。 `/系統/垃圾箱/ ls。。`, `/系統/箱/ rm。。`,和。。 `/系統/ bin / chmod。。` 分項),但直連調用部BusyBox小程序。。. 【樣可保hip首頁首頁可待的,配,配,配,配,配,配,配,配,配,配飾。。. 蘇聯解軍。。 _不是。_ 要使用BusyBox,您必須使用完整路徑調用可執行文件。.
 
-Every single shell script running in the context of Magisk will be executed in BusyBox's `ash` shell with standalone mode enabled. For what is relevant to 3rd party developers, this includes all boot scripts and module installation scripts.
+在Magisk上下文中運行的每個shell腳本都將在BusyBox中執行。 `‐。。` 外用語。。. 【第三紀發發布者,包包和本安鬆餅。。.
 
-For those who want to use this "Standalone Mode" feature outside of Magisk, there are 2 ways to enable it:
+對於那些想要在Magisk之外使用此“獨立模式”功能的人,有2種啟用它的方法:。
 
-1. Set environment variable `ASH_STANDALONE` to `1`<br>Example: `ASH_STANDALONE=1 /data/adb/magisk/busybox sh <script>`
-2. Toggle with command-line options:<br>`/data/adb/magisk/busybox sh -o standalone <script>`
+1。。. 設計場所。 `ASH_STANDALONE。。。` 至。。。 `1`<br。。>例:。 `ASH_STANDALONE=1 /data/adb/magisk/busybox sh <script>`
+2。. 切換命令行選項:。<br。>`/data/adb/magisk/busybox sh -o standalone <script>`
 
-To make sure all subsequent `sh` shell executed also runs in standalone mode, option 1 is the preferred method (and this is what Magisk and the Magisk app internally use) as environment variables are inherited down to child processes.
+確保所有後續操作。 `sh。。` (Shell)也是,(Shell)也是,(Magisk和Magisk應付款用法),因此,繼續承諾進軍。。.
 
-## Magisk Modules
+##。 魔術模塊。
 
-A Magisk module is a folder placed in `/data/adb/modules` with the structure below:
+Magisk模塊是放置的文件夾。 `/數/ adb / mo。。` 和下結:。
 
-```
-/data/adb/modules
-├── .
-├── .
+```。。
+/數/ adb / mo。。
+├─────。。 .
+├─────。。 .
 |
 ├── $MODID                  <--- The folder is named with the ID of the module
-│   │
-│   │      *** Module Identity ***
-│   │
+│。。。。。。
+││***同標識***。。
+│。。。。。。
 │   ├── module.prop         <--- This file stores the metadata of the module
-│   │
-│   │      *** Main Contents ***
-│   │
+│。。。。。。
+││***主任務發布***。。
+│。。。。。。
 │   ├── system              <--- This folder will be mounted if skip_mount does not exist
-│   │   ├── ...
-│   │   ├── ...
-│   │   └── ...
-│   │
+│├───────。。 ...
+│├───────。。 ...
+│────────。。 ...
+│。。。。。。
 │   ├── zygisk              <--- This folder contains the module's Zygisk native libraries
-│   │   ├── arm64-v8a.so
-│   │   ├── armeabi-v7a.so
-│   │   ├── x86.so
-│   │   ├── x86_64.so
+│├──arm64-v8a.so。。
+│├──armeabi-v7a.so。。
+│├────x86.so。。
+│├───x86_64.so。。
 │   │   └── unloaded        <--- If exists, the native libraries are incompatible
 │   │
 │   │      *** Status Flags ***
